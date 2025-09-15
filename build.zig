@@ -32,9 +32,9 @@ pub fn build(b: *std.Build) !void {
     harfbuzz_tests.root_module.addImport("freetype", freetype_module);
     harfbuzz_tests.root_module.addImport("harfbuzz", harfbuzz_module);
 
-    if (b.lazyDependency("font_assets", .{})) |dep| {
-        freetype_tests.root_module.addImport("font-assets", dep.module("font-assets"));
-    }
+    // if (b.lazyDependency("font_assets", .{})) |dep| {
+    //     freetype_tests.root_module.addImport("font-assets", dep.module("font-assets"));
+    // }
     if (b.lazyDependency("freetype", .{
         .target = target,
         .optimize = optimize,
@@ -61,27 +61,27 @@ pub fn build(b: *std.Build) !void {
     test_step.dependOn(&b.addRunArtifact(freetype_tests).step);
     test_step.dependOn(&b.addRunArtifact(harfbuzz_tests).step);
 
-    inline for ([_][]const u8{
-        "single-glyph",
-        "glyph-to-svg",
-    }) |example| {
-        const example_exe = b.addExecutable(.{ .name = example, .root_module = b.addModule(
-            example,
-            .{
-                .root_source_file = b.path("examples/" ++ example ++ ".zig"),
-                .target = target,
-                .optimize = optimize,
-            },
-        ) });
-        example_exe.root_module.addImport("freetype", freetype_module);
-        if (b.lazyDependency("font_assets", .{})) |dep| {
-            example_exe.root_module.addImport("font-assets", dep.module("font-assets"));
-        }
+    // inline for ([_][]const u8{
+    //     "single-glyph",
+    //     "glyph-to-svg",
+    // }) |example| {
+    //     const example_exe = b.addExecutable(.{ .name = example, .root_module = b.addModule(
+    //         example,
+    //         .{
+    //             .root_source_file = b.path("examples/" ++ example ++ ".zig"),
+    //             .target = target,
+    //             .optimize = optimize,
+    //         },
+    //     ) });
+    //     example_exe.root_module.addImport("freetype", freetype_module);
+    //     // if (b.lazyDependency("font_assets", .{})) |dep| {
+    //     //     example_exe.root_module.addImport("font-assets", dep.module("font-assets"));
+    //     // }
 
-        const example_run_cmd = b.addRunArtifact(example_exe);
-        if (b.args) |args| example_run_cmd.addArgs(args);
+    //     const example_run_cmd = b.addRunArtifact(example_exe);
+    //     if (b.args) |args| example_run_cmd.addArgs(args);
 
-        const example_run_step = b.step("run-" ++ example, "Run '" ++ example ++ "' example");
-        example_run_step.dependOn(&example_run_cmd.step);
-    }
+    //     const example_run_step = b.step("run-" ++ example, "Run '" ++ example ++ "' example");
+    //     example_run_step.dependOn(&example_run_cmd.step);
+    // }
 }
