@@ -8,25 +8,26 @@ pub fn build(b: *std.Build) !void {
 
     const freetype_module = b.addModule("mach-freetype", .{
         .root_source_file = b.path("src/freetype.zig"),
+        .target = target,
+        .optimize = optimize,
     });
     const harfbuzz_module = b.addModule("mach-harfbuzz", .{
         .root_source_file = b.path("src/harfbuzz.zig"),
         .imports = &.{.{ .name = "freetype", .module = freetype_module }},
+        .target = target,
+        .optimize = optimize,
     });
 
     const freetype_tests = b.addTest(.{
         .name = "freetype-tests",
-        .root_source_file = b.path("src/freetype.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = freetype_module,
     });
+
     freetype_tests.root_module.addImport("freetype", freetype_module);
 
     const harfbuzz_tests = b.addTest(.{
         .name = "harfbuzz-tests",
-        .root_source_file = b.path("src/harfbuzz.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = harfbuzz_module,
     });
     harfbuzz_tests.root_module.addImport("freetype", freetype_module);
     harfbuzz_tests.root_module.addImport("harfbuzz", harfbuzz_module);
@@ -64,12 +65,14 @@ pub fn build(b: *std.Build) !void {
         "single-glyph",
         "glyph-to-svg",
     }) |example| {
-        const example_exe = b.addExecutable(.{
-            .name = example,
-            .root_source_file = b.path("examples/" ++ example ++ ".zig"),
-            .target = target,
-            .optimize = optimize,
-        });
+        const example_exe = b.addExecutable(.{ .name = example, .root_module = b.addModule(
+            example,
+            .{
+                .root_source_file = b.path("examples/" ++ example ++ ".zig"),
+                .target = target,
+                .optimize = optimize,
+            },
+        ) });
         example_exe.root_module.addImport("freetype", freetype_module);
         if (b.lazyDependency("font_assets", .{})) |dep| {
             example_exe.root_module.addImport("font-assets", dep.module("font-assets"));

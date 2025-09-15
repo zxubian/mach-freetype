@@ -1,6 +1,7 @@
 .{
-    .name = "mach_freetype",
+    .name = .mach_freetype,
     .version = "0.0.0",
+    .fingerprint = 0x9ab360000b4d9154,
     .paths = .{
         "examples",
         "src",
@@ -14,13 +15,13 @@
     },
     .dependencies = .{
         .freetype = .{
-            .url = "https://pkg.machengine.org/freetype/972cd37bccecae2cc9f54cf0b562263a13209d02.tar.gz",
-            .hash = "12204cba3a237cd2c4ab983f5a28d9b54e7a9912d8c7c6e38e23140b0171d6e1ebf8",
+            .url = "git+https://github.com/zxubian/freetype-zig-build.git?ref=0.15.1#e97d0db9c5da297f27fa100f08890485e3dcb058",
+            .hash = "freetype-0.0.0-c4HhBXJJcwCfI-sX3EvWouDfcWL2DyNfgse7NEsysQAl",
             .lazy = true,
         },
         .harfbuzz = .{
-            .url = "https://pkg.machengine.org/harfbuzz/c514da98afcf5d9ad6854a7f09192f9ecfaeb061.tar.gz",
-            .hash = "1220203218ac17e497f3399e08115e73cb9505f1b9f07738eb0c5cc38ca443dec953",
+            .url = "git+https://github.com/zxubian/harfbuzz.git?ref=0.15.1#71637cf4307628cc27107905de943f7fb97710ce",
+            .hash = "harfbuzz-0.0.0-ZCEBlnRdgQBwK0VjahkI4u8AFay5cHpMKv1PyBSomYBZ",
             .lazy = true,
         },
         .font_assets = .{

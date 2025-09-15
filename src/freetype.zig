@@ -1200,7 +1200,7 @@ pub const Outline = struct {
                 return @ptrCast(@alignCast(ptr));
             }
 
-            pub fn move_to(to: [*c]const c.FT_Vector, ctx: ?*anyopaque) callconv(.C) c_int {
+            pub fn move_to(to: [*c]const c.FT_Vector, ctx: ?*anyopaque) callconv(.c) c_int {
                 const self = getSelf(ctx);
                 return if (self.callbacks.move_to(self.ctx, to.*)) |_|
                     0
@@ -1208,7 +1208,7 @@ pub const Outline = struct {
                     errorToInt(err);
             }
 
-            pub fn line_to(to: [*c]const c.FT_Vector, ctx: ?*anyopaque) callconv(.C) c_int {
+            pub fn line_to(to: [*c]const c.FT_Vector, ctx: ?*anyopaque) callconv(.c) c_int {
                 const self = getSelf(ctx);
                 return if (self.callbacks.line_to(self.ctx, to.*)) |_|
                     0
@@ -1220,7 +1220,7 @@ pub const Outline = struct {
                 control: [*c]const c.FT_Vector,
                 to: [*c]const c.FT_Vector,
                 ctx: ?*anyopaque,
-            ) callconv(.C) c_int {
+            ) callconv(.c) c_int {
                 const self = getSelf(ctx);
                 return if (self.callbacks.conic_to(
                     self.ctx,
@@ -1237,7 +1237,7 @@ pub const Outline = struct {
                 control_1: [*c]const c.FT_Vector,
                 to: [*c]const c.FT_Vector,
                 ctx: ?*anyopaque,
-            ) callconv(.C) c_int {
+            ) callconv(.c) c_int {
                 const self = getSelf(ctx);
                 return if (self.callbacks.cubic_to(
                     self.ctx,
@@ -1312,14 +1312,14 @@ pub const PaletteData = struct {
 pub const Raster = struct {
     handle: c.FT_Raster,
 
-    pub const NewFunc = *const fn (memory: ?*anyopaque, raster: [*c]c.FT_Raster) callconv(.C) c_int;
-    pub const DoneFunc = *const fn (raster: [*c]c.FT_Raster) callconv(.C) void;
-    pub const ResetFunc = *const fn (raster: c.FT_Raster, pool_base: [*c]u8, pool_size: c_ulong) callconv(.C) void;
-    pub const SetModeFunc = *const fn (raster: c.FT_Raster, mode: c_ulong, args: ?*anyopaque) callconv(.C) c_int;
-    pub const RenderFunc = *const fn (raster: c.FT_Raster, params: Params) callconv(.C) c_int;
-    pub const BitTestFunc = *const fn (y: c_int, x: c_int, user: ?*anyopaque) callconv(.C) c_int;
-    pub const BitSetFunc = *const fn (y: c_int, x: c_int, user: ?*anyopaque) callconv(.C) void;
-    pub const SpanFunc = *const fn (y: c_int, count: c_int, spans: [*]const Span, user: *anyopaque) callconv(.C) void;
+    pub const NewFunc = *const fn (memory: ?*anyopaque, raster: [*c]c.FT_Raster) callconv(.c) c_int;
+    pub const DoneFunc = *const fn (raster: [*c]c.FT_Raster) callconv(.c) void;
+    pub const ResetFunc = *const fn (raster: c.FT_Raster, pool_base: [*c]u8, pool_size: c_ulong) callconv(.c) void;
+    pub const SetModeFunc = *const fn (raster: c.FT_Raster, mode: c_ulong, args: ?*anyopaque) callconv(.c) c_int;
+    pub const RenderFunc = *const fn (raster: c.FT_Raster, params: Params) callconv(.c) c_int;
+    pub const BitTestFunc = *const fn (y: c_int, x: c_int, user: ?*anyopaque) callconv(.c) c_int;
+    pub const BitSetFunc = *const fn (y: c_int, x: c_int, user: ?*anyopaque) callconv(.c) void;
+    pub const SpanFunc = *const fn (y: c_int, count: c_int, spans: [*]const Span, user: *anyopaque) callconv(.c) void;
 
     pub const Params = extern struct {
         target: [*c]const c.FT_Bitmap,
